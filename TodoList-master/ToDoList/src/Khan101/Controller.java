@@ -1,13 +1,25 @@
 package Khan101;
 
 import Khan101.datamodel.TodoItem;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
+
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 public class Controller {
 
+
     private List<TodoItem> todoItems;
+    @FXML
+    private ListView<TodoItem> todoListView; //The name here must be the same as in the fxml file, you remember?!! :-)
+
+    @FXML
+    private TextArea itemDetailsTextArea;
 
     public void initialize() {
         TodoItem item1 = new TodoItem("Mail birthday card", "Buy a 30th birthday card for John",
@@ -28,5 +40,21 @@ public class Controller {
         todoItems.add(item4);
         todoItems.add(item5);
 
+        todoListView.getItems().setAll(todoItems);      //populate the todoList
+        todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);//select one item at a time in todolist
+
+    }
+
+    @FXML
+    public void handleClickListView() {
+        TodoItem item =  todoListView.getSelectionModel().getSelectedItem();
+       // System.out.println("The selected item is :" + item);
+
+        StringBuilder sb = new StringBuilder (item.getDetails());
+
+        sb.append("\n\n\n\n");
+        sb.append("Due:");
+        sb.append(item.getDeadline().toString());
+        itemDetailsTextArea.setText(sb.toString());
     }
 }
